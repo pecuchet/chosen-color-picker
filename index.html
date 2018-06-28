@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body, .tbl {
+            margin: 0;
+            padding: 0;
+            height: 100%; width: 100%;
+            background: #2d2d2d;
+        }
+        .tbl {
+            display: table;
+        }
+        .cell {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+        .centered {
+            position: relative;
+            display: inline-block;
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            border: 1px solid darkgray;
+            background: lightgray;
+        }
+    </style>
+</head>
+<body>
+<div class="tbl">
+    <div class="cell">
+        <div class="centered"></div>
+    </div>
+</div>
+<script type="module">
+    import Picker from './picker.js'
+
+    const p = new Picker({
+        parent: '.centered',
+        target: '.centered'
+    });
+
+    //p.destroy();
+
+</script>
+</body>
+</html>
