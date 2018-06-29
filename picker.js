@@ -85,10 +85,11 @@ export default class ColorPicker {
     static _draw(ctx, width, sections = []) {
         const center = width / 2,
             segmentWidth = 360 / sections.length,
-            segmentDepth = 30;
+            segmentDepth = 30,
+            startAt = 270;
 
-        let startAngle = 0,
-            endAngle = segmentWidth;
+        let startAngle = startAt,
+            endAngle = startAt + segmentWidth;
 
         sections.forEach((color, i) => {
 
@@ -98,9 +99,10 @@ export default class ColorPicker {
                 ctx.lineWidth = segmentDepth;
                 ctx.strokeStyle = color;
                 ctx.stroke();
-
+console.log(color, startAngle, endAngle);
                 startAngle += segmentWidth;
                 endAngle += segmentWidth;
+
             }, i * 30);
         });
     }
@@ -119,7 +121,7 @@ export default class ColorPicker {
 
         this.color = [colorData[0], colorData[1], colorData[2]];
         this.opt.target.style.backgroundColor = `rgb(${this.color.join(',')})`;
-
+console.log(this.hex);
         this.toggle();
     }
 
@@ -148,10 +150,12 @@ export default class ColorPicker {
      * @return {string}
      */
     static rgbToHex(rgb) {
-        let result = Array.isArray(rgb) ? rgb.join(',') : rgb.match(/\d+/g),
-            digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
-            hex = (x) => isNaN(x) ? '00' : digits[(x - x % 16) / 16] + digits[x % 16];
-
+        let result = Array.isArray(rgb) ? rgb : rgb.match(/\d+/g),
+            hex = (x) => {
+                let hex = parseInt(x, 10).toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            };
+        
         return '#' + hex(result[0]) + hex(result[1]) + hex(result[2]);
     }
 
