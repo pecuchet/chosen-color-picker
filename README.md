@@ -1,8 +1,9 @@
 # Color Range Picker
 
-Inspired by @wieringen's [tinycolorpicker](https://github.com/wieringen/tinycolorpicker) this small library
-renders a color circle from a configurable set of colors and can generate a range of shades from the picked color.
-
+Inspired by @wieringen's [tinycolorpicker](https://github.com/wieringen/tinycolorpicker), this small library
+renders a color circle from a configurable set of colors and can generate a range of shades from the picked color.  
+<br>
+[Demo](https://pecuchet.github.io/color-range-picker/)
 
 ## Install
 ``` npm i color-range-picker --save ```
