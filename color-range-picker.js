@@ -166,6 +166,7 @@ export default class ColorRangePicker {
      *
      * @author Pimp Trizkit
      * @see {@link https://stackoverflow.com/a/13542669/2125281|StackOverflow}
+     * @param {Number} step
      * @return {Array|null}
      */
     range(step = .1) {
