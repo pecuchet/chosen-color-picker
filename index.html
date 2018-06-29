@@ -26,6 +26,13 @@
             border: 1px solid darkgray;
             background: lightgray;
         }
+        .range {
+            position: fixed; right: 3em; top: 50%;
+            transform: translateY(-50%);
+        }
+        .range > div {
+            width: 30px; height: 30px;
+        }
     </style>
 </head>
 <body>
@@ -34,14 +41,17 @@
         <div class="centered"></div>
     </div>
 </div>
+<div class="range"></div>
 <script type="module">
-    import Picker from './picker.js'
+    import ColorRangePicker from './color-range-picker.js'
 
-    const p = new Picker({
+    const p = new ColorRangePicker({
         parent: '.centered',
         target: '.centered'
     });
 
+    //p.rgb;
+    //p.hex;
     //p.destroy();
 
 </script>

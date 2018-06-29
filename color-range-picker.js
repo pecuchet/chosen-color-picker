@@ -4,7 +4,7 @@ const
         parent: null,
         target: null,
         size: 150,
-        sections: [
+        colors: [
             '#fd5308',
             '#fb9902',
             '#fabc02',
@@ -20,7 +20,7 @@ const
         ]
     };
 
-export default class ColorPicker {
+export default class ColorRangePicker {
 
     /**
      *
@@ -47,7 +47,7 @@ export default class ColorPicker {
      * Create, style and append the canvas element
      *
      * @private
-     * @return ColorPicker
+     * @return ColorRangePicker
      */
     _setup() {
         const options = this.opt,
@@ -61,7 +61,7 @@ export default class ColorPicker {
         style.position = 'absolute';
         style.top = style.left = `-${(options.size / 2) - (parent.clientWidth / 2)}px`;
 
-        ColorPicker._draw(picker.getContext('2d'), options.size, options.sections);
+        ColorRangePicker._draw(picker.getContext('2d'), options.size, options.colors);
 
         parent.classList.add('has-picker');
         parent.style.position = 'relative';
@@ -78,20 +78,20 @@ export default class ColorPicker {
      *
      * @param {CanvasRenderingContext2D} ctx
      * @param {Number} width
-     * @param {Array} sections
+     * @param {Array} colors
      * @private
      * @return void
      */
-    static _draw(ctx, width, sections = []) {
+    static _draw(ctx, width, colors = []) {
         const center = width / 2,
-            segmentWidth = 360 / sections.length,
+            segmentWidth = 360 / colors.length,
             segmentDepth = 30,
             startAt = 270;
 
         let startAngle = startAt,
             endAngle = startAt + segmentWidth;
 
-        sections.forEach((color, i) => {
+        colors.forEach((color, i) => {
 
             setTimeout(() => {
                 ctx.beginPath();
@@ -99,7 +99,7 @@ export default class ColorPicker {
                 ctx.lineWidth = segmentDepth;
                 ctx.strokeStyle = color;
                 ctx.stroke();
-console.log(color, startAngle, endAngle);
+
                 startAngle += segmentWidth;
                 endAngle += segmentWidth;
 
@@ -121,46 +121,70 @@ console.log(color, startAngle, endAngle);
 
         this.color = [colorData[0], colorData[1], colorData[2]];
         this.opt.target.style.backgroundColor = `rgb(${this.color.join(',')})`;
-console.log(this.hex);
+
         this.toggle();
     }
 
     /**
      * Return RGB array of selected colour
      *
-     * @return {null|Array}
+     * @return {String}
      */
     get rgb() {
-        return this.color;
+        return this.color ? `rgb(${this.color.join(',')})` : '';
     }
 
     /**
      * Return HEX value of selected color
      *
-     * @return {null|String}
+     * @return {String}
      */
     get hex() {
-        return this.color ? ColorPicker.rgbToHex(this.color) : null;
+        return this.color ? ColorRangePicker.RGBToHex(this.color) : '';
     }
 
     /**
-     * Convert an RGB value to a HEX color
+     * Convert a RGB value to a HEX color
      *
+     * @author Tim Down
+     * @see https://stackoverflow.com/a/5624139/2125281
      * @param {Array|String} rgb
      * @return {string}
      */
-    static rgbToHex(rgb) {
-        let result = Array.isArray(rgb) ? rgb : rgb.match(/\d+/g),
+    static RGBToHex(rgb) {
+        let parsed = Array.isArray(rgb) ? rgb : rgb.match(/\d+/g),
             hex = (x) => {
                 let hex = parseInt(x, 10).toString(16);
                 return hex.length === 1 ? '0' + hex : hex;
             };
-        
-        return '#' + hex(result[0]) + hex(result[1]) + hex(result[2]);
+
+        return '#' + hex(parsed[0]) + hex(parsed[1]) + hex(parsed[2]);
     }
 
-    static colorRange(rgb) {
+    /**
+     * Convert a HEX value to a RGB array
+     *
+     * @author Pimp Trizkit
+     * @see {@link https://stackoverflow.com/a/13542669/2125281|StackOverflow}
+     * @return {Array|null}
+     */
+    range(step = .1) {
+        let range = [], color = this.color;
 
+        for (let i = -.5; i < .5; i += step) {
+            let t = i < 0 ? 0 : 255,
+                p = i < 0 ? i * -1 : i,
+                R = parseInt(color[0]),
+                G = parseInt(color[1]),
+                B = parseInt(color[2]);
+
+            range.push('rgb(' 
+                + (Math.round((t - R) * p) + R) + ',' 
+                + (Math.round((t - G) * p) + G) + ',' 
+                + (Math.round((t - B) * p) + B) 
+                + ')');
+        }
+        return range;
     }
 
     /**
