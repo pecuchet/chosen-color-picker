@@ -1,28 +1,29 @@
 {
-  "name": "tinycolorpicker",
-  "version": "0.9.5",
-  "description": "A lightweight cross browser jQuery based colorpicker.",
-  "homepage": "http://www.baijs.com/tinycolorpicker",
-  "main": "lib/jquery.tinycolorpicker.js",
+  "name": "color-range-picker",
+  "version": "1.0.0",
+  "description": "Simple and lightweight ES6 color range picker",
+  "homepage": "https://github.com/pecuchet/color-range-picker",
+  "main": "color-range-picker.min.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wieringen/tinycolorpicker.git"
+    "url": "https://github.com/pecuchet/color-range-picker"
   },
   "keywords": [
     "colorpicker",
-    "javascript"
+    "color range",
+    "shades"
   ],
-  "author": {
-    "name": "Maarten Baijs",
-    "email": "wieringen@gmail.com"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/wieringen/tinycolorpicker/blob/master/MIT-LICENSE.txt"
-    }
-  ],
+  "author": "dotburo <hello@dotburo.org> (https://dotburo.org)",
+  "license": "GPL-3.0+",
   "bugs": {
-    "url": "https://github.com/wieringen/tinycolorpicker/issues"
+    "url": "https://github.com/pecuchet/color-range-picker"
   },
+  "devDependencies": {
+    "rollup": "^0.62.0",
+    "rollup-plugin-terser": "^1.0.1"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  }
 }
