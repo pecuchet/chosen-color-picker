@@ -1,6 +1,6 @@
 {
   "name": "color-range-picker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simple and lightweight ES6 color range picker",
   "homepage": "https://github.com/pecuchet/color-range-picker",
   "main": "color-range-picker.min.js",
