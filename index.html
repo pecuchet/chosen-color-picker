@@ -46,25 +46,27 @@
     import ColorRangePicker from './color-range-picker.js'
 
     const
-        rangeEl = document.querySelector('.range'),
-        picker = new ColorRangePicker({
-            parent: '.centered',
-            target: '.centered'
-        });
+        displayRange = picker => {
+            rangeEl.innerHTML = '';
+            picker.range().forEach(color => {
+                const swatch = document.createElement('div');
+                swatch.style.backgroundColor = color;
+                rangeEl.appendChild(swatch);
+            });
+        },
 
-    document.querySelector('.centered').addEventListener('click', () => {
-        if (!picker.rgb) return;
-        rangeEl.innerHTML = '';
-        picker.range().forEach(color => {
-            const swatch = document.createElement('div');
-            swatch.style.backgroundColor = color;
-            rangeEl.appendChild(swatch);
-        });
-    }, false);
+        rangeEl = document.querySelector('.range');
 
-    //p.rgb;
-    //p.hex;
-    //p.destroy();
+    new ColorRangePicker({
+        parent: '.centered',
+        target: '.centered',
+        onPick: instance => {
+            console.log('Picked color:', instance.rgb, instance.hex);
+            displayRange(instance);
+        }
+    });
+
+    //instance.destroy();
 </script>
 </body>
 </html>

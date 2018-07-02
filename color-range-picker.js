@@ -4,6 +4,7 @@ const
         parent: null,
         target: null,
         size: 150,
+        onPick: null,
         colors: [
             '#fd5308',
             '#fb9902',
@@ -29,8 +30,8 @@ export default class ColorRangePicker {
     constructor(options) {
         const msg = (type) => `Provide a 'options.${type}' element to append the color picker to.`;
 
-        options.parent = options.parent ? DOC.querySelector(options.parent) : null;
-        options.target = options.target ? DOC.querySelector(options.target) : null;
+        options.parent = ColorRangePicker._cacheEl(options.parent);
+        options.target = ColorRangePicker._cacheEl(options.target);
 
         if (!options.parent) throw new TypeError(msg('parent'));
         if (!options.target) throw new TypeError(msg('target'));
@@ -41,6 +42,20 @@ export default class ColorRangePicker {
         this.color = null;
 
         this._bind();
+    }
+
+    /**
+     * Store a HTMLElement
+     *
+     * @param {null|string|HTMLElement} el
+     * @return {null|HTMLElement}
+     * @private
+     */
+    static _cacheEl(el) {
+        if (!el) return null;
+        if (typeof el === 'string') return DOC.querySelector(el);
+        if (el.nodeType) return el;
+        return null;
     }
 
     /**
@@ -237,7 +252,10 @@ export default class ColorRangePicker {
         }
 
         if (target.nodeName.toLowerCase() === 'canvas') {
-            return this._pick(target, e)
+            this._pick(target, e);
+            if (typeof this.opt.onPick === 'function')
+                this.opt.onPick.call(this, this);
+            return;
         }
 
         return this.toggle();
