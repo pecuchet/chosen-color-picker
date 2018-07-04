@@ -48,7 +48,7 @@ export default class ColorRangePicker {
      * Store a HTMLElement
      *
      * @param {null|string|HTMLElement} el
-     * @return {null|HTMLElement}
+     * @return {null|Element}
      * @private
      */
     static _cacheEl(el) {
@@ -213,7 +213,7 @@ export default class ColorRangePicker {
         let range = [];
 
         color = ColorRangePicker.getFormat(color) === 'HEX'
-            ? ColorRangePicker.HexToRGB(color)
+            ? ColorRangePicker.hexToRGB(color)
             : color;
 
         if (!color) return null;
