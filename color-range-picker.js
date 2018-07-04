@@ -185,7 +185,7 @@ export default class ColorRangePicker {
      * @return {Array|null}
      * @constructor
      */
-    static HexToRGB(hex) {
+    static hexToRGB(hex) {
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
         let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
 
@@ -240,7 +240,7 @@ export default class ColorRangePicker {
      * Other formats are currently not supported. If not hexadecimal,
      * it is assumed it is an RGB array
      *
-     * @param color
+     * @param {Array|String} color
      * @return {string}
      */
     static getFormat(color) {
