@@ -177,15 +177,46 @@ export default class ColorRangePicker {
     }
 
     /**
+     * Convert an RGB value
+     *
+     * @author Tim Down
+     * @see https://stackoverflow.com/a/5624139/2125281
+     * @param {String} hex
+     * @return {Array|null}
+     * @constructor
+     */
+    static HexToRGB(hex) {
+        // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+        let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+
+        hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+
+        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+        return result ? [
+            parseInt(result[1], 16),
+            parseInt(result[2], 16),
+            parseInt(result[3], 16)
+        ] : null;
+    }
+
+    /**
      * Convert a HEX value to a RGB array
      *
      * @author Pimp Trizkit
      * @see {@link https://stackoverflow.com/a/13542669/2125281|StackOverflow}
+     * @param {Array|String} color in RGB or HEX format
      * @param {Number} step
      * @return {Array|null}
      */
-    range(step = .1) {
-        let range = [], color = this.color;
+    static range(color, step = .1) {
+        let range = [];
+
+        color = ColorRangePicker.getFormat(color) === 'HEX'
+            ? ColorRangePicker.HexToRGB(color)
+            : color;
+
+        if (!color) return null;
 
         for (let i = -.5; i < .5; i += step) {
             let t = i < 0 ? 0 : 255,
@@ -194,13 +225,27 @@ export default class ColorRangePicker {
                 G = parseInt(color[1]),
                 B = parseInt(color[2]);
 
-            range.push('rgb(' 
-                + (Math.round((t - R) * p) + R) + ',' 
-                + (Math.round((t - G) * p) + G) + ',' 
-                + (Math.round((t - B) * p) + B) 
+            range.push('rgb('
+                + (Math.round((t - R) * p) + R) + ','
+                + (Math.round((t - G) * p) + G) + ','
+                + (Math.round((t - B) * p) + B)
                 + ')');
         }
         return range;
+    }
+
+    /**
+     * Check whether it is an RGB or HEX format
+     *
+     * Other formats are currently not supported. If not hexadecimal,
+     * it is assumed it is an RGB array
+     *
+     * @param color
+     * @return {string}
+     */
+    static getFormat(color) {
+        if (typeof color === 'string') return /,/.test(color) ? 'RGB' : 'HEX';
+        return 'RGB';
     }
 
     /**
@@ -246,6 +291,8 @@ export default class ColorRangePicker {
      */
     _click(e) {
         const target = e.target;
+
+        e.preventDefault();
 
         if (!this.opt.parent.classList.contains('has-picker')) {
             return this._setup().toggle();
